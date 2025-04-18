@@ -1,13 +1,22 @@
 
-import { Search, Menu, User } from "lucide-react";
+import { Search, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -51,12 +60,46 @@ export const Navbar = () => {
                   <Search className="h-4 w-4 text-gray-400" />
                 </div>
               </div>
-              <Button variant="ghost" className="text-gray-700 hover:text-brand-blue">
-                Sign In
-              </Button>
-              <Button className="bg-brand-blue hover:bg-brand-darkBlue text-white">
-                Sign Up
-              </Button>
+              <Sheet open={isAuthOpen} onOpenChange={setIsAuthOpen}>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" className="text-gray-700 hover:text-brand-blue">
+                    Sign In
+                  </Button>
+                </SheetTrigger>
+                <SheetContent className="w-[400px] sm:w-[540px]">
+                  <SheetHeader>
+                    <SheetTitle className="text-2xl font-bold text-center mb-6">
+                      Welcome to DataStructLab
+                    </SheetTitle>
+                  </SheetHeader>
+                  <Tabs defaultValue="signin" className="w-full">
+                    <TabsList className="grid w-full grid-cols-2 mb-6">
+                      <TabsTrigger value="signin">Sign In</TabsTrigger>
+                      <TabsTrigger value="signup">Sign Up</TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="signin" className="space-y-4">
+                      <div className="space-y-4">
+                        <Input type="email" placeholder="Email" />
+                        <Input type="password" placeholder="Password" />
+                        <Button className="w-full bg-brand-blue hover:bg-brand-darkBlue text-white">
+                          Sign In
+                        </Button>
+                      </div>
+                    </TabsContent>
+                    <TabsContent value="signup" className="space-y-4">
+                      <div className="space-y-4">
+                        <Input type="text" placeholder="Full Name" />
+                        <Input type="email" placeholder="Email" />
+                        <Input type="password" placeholder="Password" />
+                        <Input type="password" placeholder="Confirm Password" />
+                        <Button className="w-full bg-brand-blue hover:bg-brand-darkBlue text-white">
+                          Sign Up
+                        </Button>
+                      </div>
+                    </TabsContent>
+                  </Tabs>
+                </SheetContent>
+              </Sheet>
             </div>
           </div>
           <div className="md:hidden flex items-center">
@@ -95,15 +138,50 @@ export const Navbar = () => {
             </div>
           </div>
           <div className="pt-4 pb-2 flex gap-2">
-            <Button variant="outline" className="w-1/2">
-              Sign In
-            </Button>
-            <Button className="bg-brand-blue hover:bg-brand-darkBlue text-white w-1/2">
-              Sign Up
-            </Button>
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="outline" className="w-full">
+                  Sign In / Sign Up
+                </Button>
+              </SheetTrigger>
+              <SheetContent className="w-full">
+                <SheetHeader>
+                  <SheetTitle className="text-2xl font-bold text-center mb-6">
+                    Welcome to DataStructLab
+                  </SheetTitle>
+                </SheetHeader>
+                <Tabs defaultValue="signin" className="w-full">
+                  <TabsList className="grid w-full grid-cols-2 mb-6">
+                    <TabsTrigger value="signin">Sign In</TabsTrigger>
+                    <TabsTrigger value="signup">Sign Up</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="signin" className="space-y-4">
+                    <div className="space-y-4">
+                      <Input type="email" placeholder="Email" />
+                      <Input type="password" placeholder="Password" />
+                      <Button className="w-full bg-brand-blue hover:bg-brand-darkBlue text-white">
+                        Sign In
+                      </Button>
+                    </div>
+                  </TabsContent>
+                  <TabsContent value="signup" className="space-y-4">
+                    <div className="space-y-4">
+                      <Input type="text" placeholder="Full Name" />
+                      <Input type="email" placeholder="Email" />
+                      <Input type="password" placeholder="Password" />
+                      <Input type="password" placeholder="Confirm Password" />
+                      <Button className="w-full bg-brand-blue hover:bg-brand-darkBlue text-white">
+                        Sign Up
+                      </Button>
+                    </div>
+                  </TabsContent>
+                </Tabs>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
       </div>
     </nav>
   );
 };
+
