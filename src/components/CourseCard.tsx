@@ -1,4 +1,3 @@
-
 import { Check, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -85,7 +84,7 @@ export const CourseCard = ({
         
         <div className="mt-5">
           <Button asChild className="w-full">
-            <Link to={`/course/${id}`} className="flex items-center justify-center">
+            <Link to={`/courses/${id}`} className="flex items-center justify-center">
               {isStarted && !isCompleted ? "Continue" : isCompleted ? "Review" : "Start Learning"}
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
