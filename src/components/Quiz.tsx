@@ -57,6 +57,8 @@ export const Quiz = ({ quiz, onComplete }: QuizProps) => {
   };
 
   const question: Question = quiz.questions[currentQuestion];
+  const isCorrect = isSubmitted && answers[currentQuestion] === question.correctAnswer;
+  const isIncorrect = isSubmitted && answers[currentQuestion] !== question.correctAnswer;
 
   return (
     <Card className="w-full max-w-2xl mx-auto">
@@ -72,21 +74,51 @@ export const Quiz = ({ quiz, onComplete }: QuizProps) => {
           <RadioGroup
             onValueChange={handleAnswer}
             value={answers[currentQuestion]?.toString()}
+            disabled={isSubmitted}
           >
             {question.options.map((option, index) => (
               <div key={index} className="flex items-center space-x-2">
                 <RadioGroupItem value={index.toString()} id={`option-${index}`} />
-                <Label htmlFor={`option-${index}`}>{option}</Label>
+                <Label 
+                  htmlFor={`option-${index}`}
+                  className={
+                    isSubmitted
+                      ? index === question.correctAnswer
+                        ? "text-green-600 font-medium"
+                        : answers[currentQuestion] === index
+                        ? "text-red-600"
+                        : ""
+                      : ""
+                  }
+                >
+                  {option}
+                  {isSubmitted && index === question.correctAnswer && (
+                    <Check className="inline ml-2 w-4 h-4 text-green-600" />
+                  )}
+                  {isIncorrect && answers[currentQuestion] === index && (
+                    <X className="inline ml-2 w-4 h-4 text-red-600" />
+                  )}
+                </Label>
               </div>
             ))}
           </RadioGroup>
+          {isSubmitted && (
+            <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+              <p className="font-medium text-green-600">
+                Correct Answer: {question.options[question.correctAnswer]}
+              </p>
+            </div>
+          )}
         </div>
       </CardContent>
       <CardFooter className="flex justify-end gap-2">
-        {currentQuestion < quiz.questions.length - 1 ? (
+        {!isSubmitted && currentQuestion < quiz.questions.length - 1 ? (
           <Button onClick={handleNext}>Next Question</Button>
         ) : (
           !isSubmitted && <Button onClick={handleSubmit}>Submit Quiz</Button>
+        )}
+        {isSubmitted && currentQuestion < quiz.questions.length - 1 && (
+          <Button onClick={() => setCurrentQuestion(currentQuestion + 1)}>Next Question</Button>
         )}
       </CardFooter>
     </Card>
